@@ -38,6 +38,9 @@ public class User {
 	@Column(nullable = false)
 	private String status;
 	
+	@Column(nullable = false)
+	private String password;
+	
 	@OneToOne
 	@JoinColumn(name = "role_id", referencedColumnName = "id")
 	private Role role;
