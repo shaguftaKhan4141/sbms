@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.conzentus.sbms.domain.User;
+import com.conzentus.sbms.dto.UserDto;
+import com.conzentus.sbms.error.InvalidDataException;
+import com.conzentus.sbms.error.UserAlreadyExistsException;
 import com.conzentus.sbms.service.UserService;
 
 
@@ -19,8 +22,8 @@ public class UserController {
 	UserService userService;
 	
 	@PostMapping("/user/signup")
-	public @ResponseBody ResponseEntity<User> saveAuthor(@RequestBody User user) {
-		return new ResponseEntity<>(userService.signupUser(user), HttpStatus.OK);
+	public @ResponseBody ResponseEntity<User> saveAuthor(@RequestBody UserDto userDto) throws UserAlreadyExistsException, InvalidDataException {
+		return new ResponseEntity<>(userService.signup(userDto), HttpStatus.OK);
 	}
 	
 }

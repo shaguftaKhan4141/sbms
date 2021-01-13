@@ -3,6 +3,7 @@ import org.springframework.context.annotation.*;
 import org.springframework.security.authentication.dao.*;
 import org.springframework.security.config.annotation.authentication.builders.*;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.*;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -38,17 +39,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-           // .antMatchers("/").hasAnyAuthority("PUBLISHER", "SUBSCRIBER", "ADMIN")
-           // .antMatchers("/edit/**").hasAnyAuthority("ADMIN")
-           // .antMatchers("/delete/**").hasAuthority("ADMIN")
-            .antMatchers("/user/**").anonymous()
-           // .anyRequest().authenticated()
-            .antMatchers("/**").permitAll()
+        .antMatchers("/signup/**").permitAll()
+            .antMatchers("/").hasAnyAuthority("PUBLISHER", "SUBSCRIBER", "ADMIN")
+            .antMatchers("/edit/**").hasAnyAuthority("ADMIN")
+            .antMatchers("/delete/**").hasAuthority("ADMIN")
+            .anyRequest().authenticated()
             .and()
             .formLogin().permitAll()
             .and()
             .logout().permitAll()
             .and()
             .exceptionHandling().accessDeniedPage("/403");
+    }
+    
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring().antMatchers("/user/**");
     }
 }
