@@ -6,16 +6,19 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 import lombok.Data;
 
 @Data
 @Entity
+@Table(name = "blog_user")
 public class User {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
+	private Long id;
 
 	@Column(nullable = false)
 	private String firstName;
@@ -35,6 +38,7 @@ public class User {
 	@Column(nullable = false)
 	private String status;
 	
+	@OneToOne
 	@JoinColumn(name = "role_id", referencedColumnName = "id")
 	private Role role;
 }
