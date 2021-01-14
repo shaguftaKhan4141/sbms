@@ -8,4 +8,6 @@ import com.cozentus.sbms.domain.Topic;
 @Repository
 public interface TopicRepository extends JpaRepository<Topic, Long>{
 
+	public Topic findByName(String topicName);
+	
 }

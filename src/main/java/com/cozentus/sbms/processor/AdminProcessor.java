@@ -12,7 +12,7 @@ import com.cozentus.sbms.domain.User;
 import com.cozentus.sbms.dto.UserResponseDto;
 import com.cozentus.sbms.enumeration.UserRequestStatus;
 import com.cozentus.sbms.error.InvalidDataException;
-import com.cozentus.sbms.error.UserNotFoundException;
+import com.cozentus.sbms.error.NotFoundException;
 import com.cozentus.sbms.repository.BlogUserRepository;
 
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +31,7 @@ public class AdminProcessor {
 	@Autowired
 	private BlogUserRepository blogUserRepository;
 
-	public List<UserResponseDto> getAllUsersByRoleId(Long roleId) throws UserNotFoundException {
+	public List<UserResponseDto> getAllUsersByRoleId(Long roleId) throws NotFoundException {
 		log.info("Start executing method to extract users by roleId");
 		List<UserResponseDto> usersResponse = new ArrayList<>();
 		log.info("Triggering query to extract users from db having roleId : {}", roleId);
@@ -48,13 +48,13 @@ public class AdminProcessor {
 			});
 		} else {
 			log.error("User not found for roleId : {}", roleId);
-			throw new UserNotFoundException("User not found for roleId : " + roleId);
+			throw new NotFoundException("User not found for roleId : " + roleId);
 		}
 		log.info("Execution end of extract users by roleId method");
 		return usersResponse;
 	}
 
-	public List<UserResponseDto> getAllUsers(String requestStatus) throws UserNotFoundException, InvalidDataException {
+	public List<UserResponseDto> getAllUsers(String requestStatus) throws NotFoundException, InvalidDataException {
 		List<User> usersFromdB = null;
 		List<UserResponseDto> usersResponse = new ArrayList<>();
 		if (requestStatus != null) {
@@ -78,7 +78,7 @@ public class AdminProcessor {
 			});
 		} else {
 			log.error("No User found in database");
-			throw new UserNotFoundException("No User found in database");
+			throw new NotFoundException("No User found in database");
 		}
 		return usersResponse;
 	}

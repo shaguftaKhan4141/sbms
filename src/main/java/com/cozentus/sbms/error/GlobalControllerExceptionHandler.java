@@ -22,7 +22,7 @@ class GlobalControllerExceptionHandler {
     }
 	
 	@ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler({UserNotFoundException.class})
+    @ExceptionHandler({NotFoundException.class})
     public ResponseEntity<Object> handleNotFoundRequest(Exception ex) {
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", LocalDateTime.now());
