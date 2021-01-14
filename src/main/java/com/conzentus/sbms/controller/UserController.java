@@ -14,16 +14,16 @@ import com.conzentus.sbms.error.InvalidDataException;
 import com.conzentus.sbms.error.UserAlreadyExistsException;
 import com.conzentus.sbms.service.UserService;
 
-
 @RestController
 public class UserController {
 
 	@Autowired
 	UserService userService;
-	
+
 	@PostMapping("/user/signup")
-	public @ResponseBody ResponseEntity<User> saveAuthor(@RequestBody UserDto userDto) throws UserAlreadyExistsException, InvalidDataException {
+	public @ResponseBody ResponseEntity<User> saveAuthor(@RequestBody UserDto userDto)
+			throws UserAlreadyExistsException, InvalidDataException {
 		return new ResponseEntity<>(userService.signup(userDto), HttpStatus.OK);
 	}
-	
+
 }

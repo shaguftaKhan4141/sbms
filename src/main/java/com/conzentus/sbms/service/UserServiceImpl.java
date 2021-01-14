@@ -32,22 +32,17 @@ public class UserServiceImpl implements UserService {
 	}
 
 	private void validateUser(UserDto userDto) throws UserAlreadyExistsException, InvalidDataException {
-		
-		if(!CommonUtils.isValidEmail(userDto.getEmailId())) {
+		if (!CommonUtils.isValidEmail(userDto.getEmailId())) {
 			throw new InvalidDataException("Invalid email format!");
 		}
-		
 		if (userRepository.existsByUserName(userDto.getUserName())) {
 			throw new UserAlreadyExistsException("UserName already exists!");
 		}
-
 		if (userRepository.existsBycontactNo(userDto.getContactNo())) {
 			throw new UserAlreadyExistsException("Phone no. already exists!");
 		}
-
 		if (userRepository.existsByEmailId(userDto.getEmailId())) {
 			throw new UserAlreadyExistsException("email already exists!");
 		}
 	}
-
 }
