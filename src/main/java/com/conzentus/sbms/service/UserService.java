@@ -7,5 +7,5 @@ import com.conzentus.sbms.error.UserAlreadyExistsException;
 
 public interface UserService {
 
-	User signup(UserDto userDto) throws UserAlreadyExistsException, InvalidDataException;
+	UserDto signup(UserDto userDto) throws UserAlreadyExistsException, InvalidDataException;
 }

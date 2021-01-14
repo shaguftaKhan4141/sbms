@@ -1,11 +1,11 @@
 package com.conzentus.sbms.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.conzentus.sbms.domain.Role;
 import com.conzentus.sbms.domain.User;
-import com.conzentus.sbms.domain.UserStatus;
 import com.conzentus.sbms.dto.UserDto;
 import com.conzentus.sbms.error.InvalidDataException;
 import com.conzentus.sbms.error.UserAlreadyExistsException;
@@ -22,13 +22,16 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	RoleRepository roleRepository;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
 	@Override
-	public User signup(UserDto userDto) throws UserAlreadyExistsException, InvalidDataException {
+	public UserDto signup(UserDto userDto) throws UserAlreadyExistsException, InvalidDataException {
 		validateUser(userDto);
 		Role role = roleRepository.findByName(userDto.getRole());
-		User user = UserMapper.userDtoToUser(userDto, role, UserStatus.PENDING.toString());
-		return userRepository.save(user);
+		User user = UserMapper.userDtoToUser(userDto, role, passwordEncoder.encode(userDto.getPassword()));
+		return UserMapper.userToUserDto(userRepository.save(user));
 	}
 
 	private void validateUser(UserDto userDto) throws UserAlreadyExistsException, InvalidDataException {

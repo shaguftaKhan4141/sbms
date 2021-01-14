@@ -1,17 +1,27 @@
 package com.conzentus.sbms.authentication;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
 import org.springframework.security.authentication.dao.*;
 import org.springframework.security.config.annotation.authentication.builders.*;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.*;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import com.conzentus.sbms.repository.BlogUserRepository;
  
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
  
+	@Autowired
+	BlogUserRepository userRepository;
+	
+	@Autowired
+	JwtDetails jwtDetails;
+	
     @Bean
     public UserDetailsService userDetailsService() {
         return new UserDetailsServiceImpl();
@@ -35,21 +45,30 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(authenticationProvider());
     }
- 
+    
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-        .antMatchers("/signup/**").permitAll()
+        http
+        .cors().and().csrf().disable()
+        .addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtDetails))
+        .addFilter(new JWTAuthorizationFilter(authenticationManager(), userRepository, jwtDetails))
+        .authorizeRequests()
             .antMatchers("/").hasAnyAuthority("PUBLISHER", "SUBSCRIBER", "ADMIN")
             .antMatchers("/edit/**").hasAnyAuthority("ADMIN")
             .antMatchers("/delete/**").hasAuthority("ADMIN")
             .anyRequest().authenticated()
+            
             .and()
             .formLogin().permitAll()
             .and()
             .logout().permitAll()
             .and()
-            .exceptionHandling().accessDeniedPage("/403");
+            .exceptionHandling().accessDeniedPage("/403")
+            
+            .and()
+            // this disables session creation on Spring Security
+            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
     
     @Override

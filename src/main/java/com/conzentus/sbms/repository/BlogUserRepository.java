@@ -9,6 +9,7 @@ import com.conzentus.sbms.domain.User;
 public interface BlogUserRepository extends JpaRepository<User, Long> {
  
 	public boolean existsByEmailId(String email);
+	public User findByUserName(String userName);
 	public boolean existsByUserName(String userName);
 	public boolean existsBycontactNo(String contactNo);
 }
