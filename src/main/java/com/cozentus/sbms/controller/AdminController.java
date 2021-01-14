@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cozentus.sbms.dto.UserResponseDto;
 import com.cozentus.sbms.endpoint.AdminEndpoint;
+import com.cozentus.sbms.error.InvalidDataException;
 import com.cozentus.sbms.error.UserNotFoundException;
 import com.cozentus.sbms.handler.GenericResponseHandler;
 import com.cozentus.sbms.processor.AdminProcessor;
@@ -23,9 +24,16 @@ public class AdminController implements AdminEndpoint {
 	private AdminProcessor adminProcessor;
 
 	@Override
-	public ResponseEntity<?> getAllUsersByRole(Long roleId) throws UserNotFoundException {
+	public ResponseEntity<?> getAllUsersByRoleId(Long roleId) throws UserNotFoundException {
 		log.debug("Inside getAllUserByRole() method"); 
 		List<UserResponseDto> response = adminProcessor.getAllUsersByRoleId(roleId);
+		return new GenericResponseHandler.Builder().setStatus(HttpStatus.OK).setMessage("User fetched successfully")
+				.setData(response).create();
+	}
+
+	@Override
+	public ResponseEntity<?> getAllUsers(String requestStatus) throws UserNotFoundException, InvalidDataException {
+		List<UserResponseDto> response = adminProcessor.getAllUsers(requestStatus);
 		return new GenericResponseHandler.Builder().setStatus(HttpStatus.OK).setMessage("User fetched successfully")
 				.setData(response).create();
 	}
