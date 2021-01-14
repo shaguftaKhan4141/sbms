@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 
 import com.cozentus.sbms.domain.Role;
 import com.cozentus.sbms.domain.User;
-import com.cozentus.sbms.domain.UserStatus;
 import com.cozentus.sbms.dto.UserDto;
+import com.cozentus.sbms.enumeration.UserRequestStatus;
 import com.cozentus.sbms.error.InvalidDataException;
 import com.cozentus.sbms.error.UserAlreadyExistsException;
 import com.cozentus.sbms.mapper.UserMapper;
@@ -27,9 +27,14 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User signup(UserDto userDto) throws UserAlreadyExistsException, InvalidDataException {
+		User user = null;
 		validateUser(userDto);
 		Optional<Role> role = roleRepository.findById(userDto.getRoleId());
-		User user = UserMapper.userDtoToUser(userDto, role.get(), UserStatus.PENDING.toString());
+		if (userDto.getRoleId() == 1) {
+			user = UserMapper.userDtoToUser(userDto, role.get(), UserRequestStatus.APPROVED.toString());
+		} else {
+			user = UserMapper.userDtoToUser(userDto, role.get(), UserRequestStatus.PENDING.toString());
+		}
 		return userRepository.save(user);
 	}
 

@@ -2,6 +2,7 @@ package com.cozentus.sbms.processor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,12 +59,13 @@ public class AdminProcessor {
 		List<User> usersFromdB = null;
 		List<UserResponseDto> usersResponse = new ArrayList<>();
 		if (requestStatus != null) {
-			if (requestStatus.equalsIgnoreCase(UserRequestStatus.PENDING.name())
-					|| requestStatus.equalsIgnoreCase(UserRequestStatus.APPROVED.name()))
+			if (requestStatus.equalsIgnoreCase(UserRequestStatus.PENDING.toString())
+					|| requestStatus.equalsIgnoreCase(UserRequestStatus.APPROVED.toString())) {
 				usersFromdB = blogUserRepository.findByStatus(requestStatus);
-			else
+			} else {
 				log.error("Status must be Pending or Approved");
 				throw new InvalidDataException("Status must be Pending or Approved");
+			}
 		} else {
 			usersFromdB = blogUserRepository.findAllUsers();
 		}
@@ -81,5 +83,16 @@ public class AdminProcessor {
 			throw new NotFoundException("No User found in database");
 		}
 		return usersResponse;
+	}
+
+	public void approvedUserRequest(Long userId) throws NotFoundException {
+		Optional<User> userFromDb = blogUserRepository.findById(userId);
+		if (userFromDb.isPresent()) {
+			User user = userFromDb.get();
+			user.setStatus(UserRequestStatus.APPROVED.toString());
+			blogUserRepository.save(user);
+		} else {
+			throw new NotFoundException("No User found in database for userId : " + userId);
+		}
 	}
 }

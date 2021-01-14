@@ -25,7 +25,7 @@ public class AdminController implements AdminEndpoint {
 
 	@Override
 	public ResponseEntity<?> getAllUsersByRoleId(Long roleId) throws NotFoundException {
-		log.debug("Inside getAllUserByRole() method"); 
+		log.debug("Inside getAllUserByRole() method");
 		List<UserResponseDto> response = adminProcessor.getAllUsersByRoleId(roleId);
 		return new GenericResponseHandler.Builder().setStatus(HttpStatus.OK).setMessage("User fetched successfully")
 				.setData(response).create();
@@ -36,5 +36,12 @@ public class AdminController implements AdminEndpoint {
 		List<UserResponseDto> response = adminProcessor.getAllUsers(requestStatus);
 		return new GenericResponseHandler.Builder().setStatus(HttpStatus.OK).setMessage("User fetched successfully")
 				.setData(response).create();
+	}
+
+	@Override
+	public ResponseEntity<?> approvedUserRequest(Long userId) throws NotFoundException {
+		adminProcessor.approvedUserRequest(userId);
+		return new GenericResponseHandler.Builder().setStatus(HttpStatus.OK)
+				.setMessage("User Request Approved successfully").create();
 	}
 }
