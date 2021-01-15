@@ -1,5 +1,7 @@
 package com.cozentus.sbms.domain;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -44,4 +46,16 @@ public class User {
 	@OneToOne
 	@JoinColumn(name = "role_id", referencedColumnName = "id")
 	private Role role;
+	
+	@Column(name = "created_date")
+	private Date createdDate;
+
+	@Column(name = "created_by")
+	private String createdBy;
+
+	@Column(name = "updated_date")
+	private Date updatedDate;
+
+	@Column(name = "updated_by")
+	private String updatedBy;
 }

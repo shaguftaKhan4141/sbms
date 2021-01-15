@@ -12,17 +12,10 @@ import lombok.NoArgsConstructor;
 public class UserResponseDto {
 
 	private String firstName;
-
 	private String lastName;
-
 	private String contactNo;
-
 	private String emailId;
-
 	private String userName;
-
 	private String role;
-	
 	private String requestStatus;
-
 }

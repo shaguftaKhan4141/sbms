@@ -1,6 +1,7 @@
 package com.cozentus.sbms.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -88,12 +89,19 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
-	public void approvedUserRequest(Long userId) throws NotFoundException {
+	public void approvedUserRequest(Long userId, String requestStatus) throws NotFoundException {
 		Optional<User> userFromDb = blogUserRepository.findById(userId);
 		if (userFromDb.isPresent()) {
 			User user = userFromDb.get();
-			user.setStatus(UserRequestStatus.APPROVED.toString());
+			if(requestStatus.equalsIgnoreCase(UserRequestStatus.APPROVED.toString())) {
+				user.setStatus(UserRequestStatus.APPROVED.toString());
+			} else if(requestStatus.equalsIgnoreCase(UserRequestStatus.REJECTED.toString())) {
+				user.setStatus(UserRequestStatus.REJECTED.toString());
+			}
+			user.setUpdatedBy("API");
+			user.setUpdatedDate(new Date());
 			blogUserRepository.save(user);
+			// TO DO : Send notification to user regarding requestStatus
 		} else {
 			throw new NotFoundException("No User found in database for userId : " + userId);
 		}

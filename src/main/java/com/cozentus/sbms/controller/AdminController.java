@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cozentus.sbms.dto.UserResponseDto;
 import com.cozentus.sbms.endpoint.AdminEndpoint;
+import com.cozentus.sbms.enumeration.UserRequestStatus;
 import com.cozentus.sbms.error.InvalidDataException;
 import com.cozentus.sbms.error.NotFoundException;
 import com.cozentus.sbms.handler.GenericResponseHandler;
@@ -39,9 +40,14 @@ public class AdminController implements AdminEndpoint {
 	}
 
 	@Override
-	public ResponseEntity<?> approvedUserRequest(Long userId) throws NotFoundException {
-		adminService.approvedUserRequest(userId);
+	public ResponseEntity<?> approvedUserRequest(Long userId, String requestStatus) throws NotFoundException, InvalidDataException {
+		if(requestStatus.equalsIgnoreCase(UserRequestStatus.APPROVED.toString()) || 
+				requestStatus.equalsIgnoreCase(UserRequestStatus.REJECTED.toString())) {
+			adminService.approvedUserRequest(userId, requestStatus);
+		} else {
+			throw new InvalidDataException("User Request Status must be APPROVED or REJECTED");
+		}
 		return new GenericResponseHandler.Builder().setStatus(HttpStatus.OK)
-				.setMessage("User Request Approved successfully").create();
+				.setMessage("User Request status changed").create();
 	}
 }

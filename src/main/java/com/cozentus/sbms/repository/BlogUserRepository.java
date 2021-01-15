@@ -22,7 +22,7 @@ public interface BlogUserRepository extends JpaRepository<User, Long> {
 	
 	public List<User> findByRoleId(Long roleId);
 	
-	@Query("Select u FROM User u WHERE u.role.id = 2 OR u.role.id = 3 and u.status = :requestStatus")
+	@Query("Select u FROM User u WHERE u.status = :requestStatus AND (u.role.id = 2 OR u.role.id = 3)")
 	public List<User> findByStatus(@Param("requestStatus") String requestStatus);
 	
 	@Query("Select u FROM User u WHERE u.role.id = 2 OR u.role.id = 3")

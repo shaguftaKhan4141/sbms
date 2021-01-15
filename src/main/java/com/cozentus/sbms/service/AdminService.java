@@ -12,6 +12,6 @@ public interface AdminService {
 
 	List<UserResponseDto> getAllUsers(String requestStatus) throws NotFoundException, InvalidDataException;
 
-	void approvedUserRequest(Long userId) throws NotFoundException;
+	void approvedUserRequest(Long userId, String requestStatus) throws NotFoundException;
 
 }

@@ -19,6 +19,7 @@ public interface AdminEndpoint {
 			throws NotFoundException, InvalidDataException;
 	
 	@PutMapping(value = "/user/request/{userId}")
-	public ResponseEntity<?> approvedUserRequest(@PathVariable("userId") Long userId) throws NotFoundException;
+	public ResponseEntity<?> approvedUserRequest(@PathVariable("userId") Long userId,
+			@RequestParam("status") String requestStatus) throws NotFoundException, InvalidDataException;
 	
 }

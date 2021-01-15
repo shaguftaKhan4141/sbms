@@ -30,6 +30,7 @@ public class UserMapper {
 				.lastName(user.getLastName())
 				.role(user.getRole().getName())
 				.userName(user.getUserName())
+				.requestStatus(user.getStatus())
 				.build();
 	}
 
