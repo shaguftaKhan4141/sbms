@@ -1,5 +1,7 @@
 package com.cozentus.sbms.mapper;
 
+import java.util.Date;
+
 import com.cozentus.sbms.domain.Role;
 import com.cozentus.sbms.domain.User;
 import com.cozentus.sbms.dto.UserRequestDto;
@@ -19,6 +21,8 @@ public class UserMapper {
 		user.setRole(role);
 		user.setStatus(UserRequestStatus.PENDING.toString());
 		user.setUserName(userDto.getUserName());
+		user.setCreatedBy("API");
+		user.setCreatedDate(new Date());
 		return user;
 	}
 	
@@ -31,6 +35,10 @@ public class UserMapper {
 				.role(user.getRole().getName())
 				.userName(user.getUserName())
 				.requestStatus(user.getStatus())
+				.createdBy(user.getCreatedBy())
+				.createdDate(user.getCreatedDate())
+				.updatedBy(user.getUpdatedBy())
+				.updatedDate(user.getUpdatedDate())
 				.build();
 	}
 

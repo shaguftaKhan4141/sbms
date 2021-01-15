@@ -1,6 +1,5 @@
 package com.cozentus.sbms.service;
 
-import java.util.Date;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,8 +34,6 @@ public class UserServiceImpl implements UserService {
 		validateUser(userDto);
 		Optional<Role> role = roleRepository.findById(userDto.getRoleId());
 		User user = UserMapper.userDtoToUser(userDto, role.get(), passwordEncoder.encode(userDto.getPassword()));
-		user.setCreatedBy("API");
-		user.setCreatedDate(new Date());
 		return UserMapper.userToUserDto(userRepository.save(user));
 	}
 

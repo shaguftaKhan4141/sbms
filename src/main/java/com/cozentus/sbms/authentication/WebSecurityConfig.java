@@ -59,10 +59,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/").hasAnyAuthority("PUBLISHER", "SUBSCRIBER", "ADMIN")
             .antMatchers("/edit/**").hasAnyAuthority("ADMIN")
             .antMatchers("/delete/**").hasAuthority("ADMIN")
-            .anyRequest().authenticated()
-            
-
-            
+            .anyRequest().authenticated()           
             .and()
             // this disables session creation on Spring Security
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
