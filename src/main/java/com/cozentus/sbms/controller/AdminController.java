@@ -12,7 +12,7 @@ import com.cozentus.sbms.endpoint.AdminEndpoint;
 import com.cozentus.sbms.error.InvalidDataException;
 import com.cozentus.sbms.error.NotFoundException;
 import com.cozentus.sbms.handler.GenericResponseHandler;
-import com.cozentus.sbms.processor.AdminProcessor;
+import com.cozentus.sbms.service.AdminService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -21,20 +21,27 @@ import lombok.extern.slf4j.Slf4j;
 public class AdminController implements AdminEndpoint {
 
 	@Autowired
-	private AdminProcessor adminProcessor;
+	private AdminService adminService;
 
 	@Override
 	public ResponseEntity<?> getAllUsersByRoleId(Long roleId) throws NotFoundException {
-		log.debug("Inside getAllUserByRole() method"); 
-		List<UserResponseDto> response = adminProcessor.getAllUsersByRoleId(roleId);
+		log.debug("Inside getAllUserByRole() method");
+		List<UserResponseDto> response = adminService.getAllUsersByRoleId(roleId);
 		return new GenericResponseHandler.Builder().setStatus(HttpStatus.OK).setMessage("User fetched successfully")
 				.setData(response).create();
 	}
 
 	@Override
 	public ResponseEntity<?> getAllUsers(String requestStatus) throws NotFoundException, InvalidDataException {
-		List<UserResponseDto> response = adminProcessor.getAllUsers(requestStatus);
+		List<UserResponseDto> response = adminService.getAllUsers(requestStatus);
 		return new GenericResponseHandler.Builder().setStatus(HttpStatus.OK).setMessage("User fetched successfully")
 				.setData(response).create();
+	}
+
+	@Override
+	public ResponseEntity<?> approvedUserRequest(Long userId) throws NotFoundException {
+		adminService.approvedUserRequest(userId);
+		return new GenericResponseHandler.Builder().setStatus(HttpStatus.OK)
+				.setMessage("User Request Approved successfully").create();
 	}
 }

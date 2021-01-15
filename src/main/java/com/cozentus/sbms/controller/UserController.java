@@ -8,7 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cozentus.sbms.service.UserService;
-import com.cozentus.sbms.dto.UserDto;
+import com.cozentus.sbms.dto.UserRequestDto;
+import com.cozentus.sbms.dto.UserResponseDto;
 import com.cozentus.sbms.endpoint.UserEndpoint;
 import com.cozentus.sbms.error.InvalidDataException;
 import com.cozentus.sbms.error.UserAlreadyExistsException;
@@ -21,9 +22,9 @@ public class UserController implements UserEndpoint {
 	UserService userService;
 
 	@Override
-	public ResponseEntity<?> saveAuthor(@Valid UserDto userDto)
+	public ResponseEntity<?> saveAuthor(@Valid UserRequestDto userDto)
 			throws UserAlreadyExistsException, InvalidDataException {
-		UserDto user = userService.signup(userDto);
+		UserResponseDto user = userService.signup(userDto);
 		
 		return new GenericResponseHandler
 				.Builder()

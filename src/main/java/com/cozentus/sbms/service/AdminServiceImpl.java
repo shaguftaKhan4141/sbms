@@ -1,7 +1,8 @@
-package com.cozentus.sbms.processor;
+package com.cozentus.sbms.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,11 +27,12 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
-public class AdminProcessor {
+public class AdminServiceImpl implements AdminService {
 
 	@Autowired
 	private BlogUserRepository blogUserRepository;
 
+	@Override
 	public List<UserResponseDto> getAllUsersByRoleId(Long roleId) throws NotFoundException {
 		log.info("Start executing method to extract users by roleId");
 		List<UserResponseDto> usersResponse = new ArrayList<>();
@@ -54,16 +56,18 @@ public class AdminProcessor {
 		return usersResponse;
 	}
 
+	@Override
 	public List<UserResponseDto> getAllUsers(String requestStatus) throws NotFoundException, InvalidDataException {
 		List<User> usersFromdB = null;
 		List<UserResponseDto> usersResponse = new ArrayList<>();
 		if (requestStatus != null) {
-			if (requestStatus.equalsIgnoreCase(UserRequestStatus.PENDING.name())
-					|| requestStatus.equalsIgnoreCase(UserRequestStatus.APPROVED.name()))
+			if (requestStatus.equalsIgnoreCase(UserRequestStatus.PENDING.toString())
+					|| requestStatus.equalsIgnoreCase(UserRequestStatus.APPROVED.toString())) {
 				usersFromdB = blogUserRepository.findByStatus(requestStatus);
-			else
+			} else {
 				log.error("Status must be Pending or Approved");
 				throw new InvalidDataException("Status must be Pending or Approved");
+			}
 		} else {
 			usersFromdB = blogUserRepository.findAllUsers();
 		}
@@ -81,5 +85,17 @@ public class AdminProcessor {
 			throw new NotFoundException("No User found in database");
 		}
 		return usersResponse;
+	}
+
+	@Override
+	public void approvedUserRequest(Long userId) throws NotFoundException {
+		Optional<User> userFromDb = blogUserRepository.findById(userId);
+		if (userFromDb.isPresent()) {
+			User user = userFromDb.get();
+			user.setStatus(UserRequestStatus.APPROVED.toString());
+			blogUserRepository.save(user);
+		} else {
+			throw new NotFoundException("No User found in database for userId : " + userId);
+		}
 	}
 }

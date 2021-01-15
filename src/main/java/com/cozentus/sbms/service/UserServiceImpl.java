@@ -8,7 +8,8 @@ import org.springframework.stereotype.Service;
 
 import com.cozentus.sbms.domain.Role;
 import com.cozentus.sbms.domain.User;
-import com.cozentus.sbms.dto.UserDto;
+import com.cozentus.sbms.dto.UserRequestDto;
+import com.cozentus.sbms.dto.UserResponseDto;
 import com.cozentus.sbms.error.InvalidDataException;
 import com.cozentus.sbms.error.UserAlreadyExistsException;
 import com.cozentus.sbms.mapper.UserMapper;
@@ -29,14 +30,14 @@ public class UserServiceImpl implements UserService {
 	private PasswordEncoder passwordEncoder;
 
 	@Override
-	public UserDto signup(UserDto userDto) throws UserAlreadyExistsException, InvalidDataException {
+	public UserResponseDto signup(UserRequestDto userDto) throws UserAlreadyExistsException, InvalidDataException {
 		validateUser(userDto);
 		Optional<Role> role = roleRepository.findById(userDto.getRoleId());
 		User user = UserMapper.userDtoToUser(userDto, role.get(), passwordEncoder.encode(userDto.getPassword()));
 		return UserMapper.userToUserDto(userRepository.save(user));
 	}
 
-	private void validateUser(UserDto userDto) throws UserAlreadyExistsException, InvalidDataException {
+	private void validateUser(UserRequestDto userDto) throws UserAlreadyExistsException, InvalidDataException {
 		if (!CommonUtils.isValidEmail(userDto.getEmailId())) {
 			throw new InvalidDataException("Invalid email format!");
 		}

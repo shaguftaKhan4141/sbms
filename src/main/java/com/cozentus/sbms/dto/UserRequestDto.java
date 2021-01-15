@@ -9,7 +9,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class UserDto {
+public class UserRequestDto {
 
 	@JsonProperty("first_name")
 	@NotEmpty(message = "firstName must not be empty")

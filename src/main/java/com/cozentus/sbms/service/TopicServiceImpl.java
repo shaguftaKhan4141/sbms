@@ -1,4 +1,4 @@
-package com.cozentus.sbms.processor;
+package com.cozentus.sbms.service;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -15,11 +15,13 @@ import com.cozentus.sbms.error.NotFoundException;
 import com.cozentus.sbms.repository.TopicRepository;
 
 @Service
-public class TopicProcessor {
+public class TopicServiceImpl implements TopicService {
 
 	@Autowired
 	private TopicRepository topicRepository;
 
+	
+	@Override
 	public void addTopics(List<String> topicNames) {
 		topicNames.stream().forEach(topicName -> {
 			Topic topic = topicRepository.findByName(topicName);
@@ -33,6 +35,8 @@ public class TopicProcessor {
 		});
 	}
 
+	
+	@Override
 	public void updateTopic(String topicName, Long id) throws NotFoundException {
 		Optional<Topic> topicFromdB = topicRepository.findById(id);
 		if (topicFromdB.isPresent()) {
@@ -46,6 +50,8 @@ public class TopicProcessor {
 		}
 	}
 
+	
+	@Override
 	public void deleteTopicById(Long id) throws NotFoundException {
 		Optional<Topic> topicFromdB = topicRepository.findById(id);
 		if (topicFromdB.isPresent()) {
@@ -55,6 +61,7 @@ public class TopicProcessor {
 		}
 	}
 
+	@Override
 	public List<TopicDto> getAllTopics() {
 		List<TopicDto> topicDtos = new ArrayList<>();
 		List<Topic> topicsFromDb = topicRepository.findAll();
