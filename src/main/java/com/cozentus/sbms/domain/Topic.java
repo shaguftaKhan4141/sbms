@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,18 +24,20 @@ public class Topic {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	@Column(nullable = false)
+	@Column(nullable = false, length = 100)
 	private String name;
 
-	@Column(name = "created_date")
+	@Temporal(TemporalType.DATE)
+	@Column(name = "created_date", length = 19)
 	private Date createdDate;
 
-	@Column(name = "created_by")
+	@Column(name = "created_by", length = 50)
 	private String createdBy;
 
-	@Column(name = "updated_date")
+	@Temporal(TemporalType.DATE)
+	@Column(name = "updated_date", length = 19)
 	private Date updatedDate;
 
-	@Column(name = "updated_by")
+	@Column(name = "updated_by", length = 50)
 	private String updatedBy;
 }

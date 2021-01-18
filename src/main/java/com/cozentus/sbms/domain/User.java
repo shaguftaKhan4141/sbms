@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import lombok.Data;
 
@@ -47,15 +49,17 @@ public class User {
 	@JoinColumn(name = "role_id", referencedColumnName = "id")
 	private Role role;
 	
-	@Column(name = "created_date")
+	@Temporal(TemporalType.DATE)
+	@Column(name = "created_date", length = 19)
 	private Date createdDate;
 
-	@Column(name = "created_by")
+	@Column(name = "created_by", length = 50)
 	private String createdBy;
 
-	@Column(name = "updated_date")
+	@Temporal(TemporalType.DATE)
+	@Column(name = "updated_date", length = 19)
 	private Date updatedDate;
 
-	@Column(name = "updated_by")
+	@Column(name = "updated_by", length = 50)
 	private String updatedBy;
 }
