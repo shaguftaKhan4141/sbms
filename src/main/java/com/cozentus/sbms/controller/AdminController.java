@@ -34,6 +34,7 @@ public class AdminController implements AdminEndpoint {
 
 	@Override
 	public ResponseEntity<?> getAllUsers(String requestStatus) throws NotFoundException, InvalidDataException {
+		log.debug("Inside getAllUsers() method");
 		List<UserResponseDto> response = adminService.getAllUsers(requestStatus);
 		return new GenericResponseHandler.Builder().setStatus(HttpStatus.OK).setMessage("User fetched successfully")
 				.setData(response).create();
@@ -41,10 +42,12 @@ public class AdminController implements AdminEndpoint {
 
 	@Override
 	public ResponseEntity<?> approvedUserRequest(Long userId, String requestStatus) throws NotFoundException, InvalidDataException {
+		log.debug("Inside approvedUserRequest() method");
 		if(requestStatus.equalsIgnoreCase(UserRequestStatus.APPROVED.toString()) || 
 				requestStatus.equalsIgnoreCase(UserRequestStatus.REJECTED.toString())) {
 			adminService.approvedUserRequest(userId, requestStatus);
 		} else {
+			log.error("User Request Status must be APPROVED or REJECTED");
 			throw new InvalidDataException("User Request Status must be APPROVED or REJECTED");
 		}
 		return new GenericResponseHandler.Builder().setStatus(HttpStatus.OK)

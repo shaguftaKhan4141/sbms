@@ -59,9 +59,11 @@ public class AdminServiceImpl implements AdminService {
 
 	@Override
 	public List<UserResponseDto> getAllUsers(String requestStatus) throws NotFoundException, InvalidDataException {
+		log.info("Start executing method to get all users");
 		List<User> usersFromdB = null;
 		List<UserResponseDto> usersResponse = new ArrayList<>();
 		if (requestStatus != null) {
+			log.info("Extracting all users from db having status : {}", requestStatus);
 			if (requestStatus.equalsIgnoreCase(UserRequestStatus.PENDING.toString())
 					|| requestStatus.equalsIgnoreCase(UserRequestStatus.APPROVED.toString())) {
 				usersFromdB = blogUserRepository.findByStatus(requestStatus);
@@ -70,9 +72,11 @@ public class AdminServiceImpl implements AdminService {
 				throw new InvalidDataException("Status must be Pending or Approved");
 			}
 		} else {
+			log.info("Extracting all users from DB");
 			usersFromdB = blogUserRepository.findAllUsers();
 		}
 		if (!CollectionUtils.isEmpty(usersFromdB)) {
+			log.info("Users extracted from DB, iterating users record to make final response");
 			usersFromdB.stream().forEach(user -> {
 				UserResponseDto userResponseDto = new UserResponseDto();
 				// BeanUtils : copy model class data to DTO class
@@ -90,8 +94,11 @@ public class AdminServiceImpl implements AdminService {
 
 	@Override
 	public void approvedUserRequest(Long userId, String requestStatus) throws NotFoundException {
+		log.info("Start executing method to approve user request");
+		log.info("Extracting user from db having userId : {}", userId);
 		Optional<User> userFromDb = blogUserRepository.findById(userId);
 		if (userFromDb.isPresent()) {
+			log.info("User extracted from db going to update user");
 			User user = userFromDb.get();
 			if(requestStatus.equalsIgnoreCase(UserRequestStatus.APPROVED.toString())) {
 				user.setStatus(UserRequestStatus.APPROVED.toString());
@@ -101,8 +108,10 @@ public class AdminServiceImpl implements AdminService {
 			user.setUpdatedBy("API");
 			user.setUpdatedDate(new Date());
 			blogUserRepository.save(user);
+			log.info("User data updated successfully.");
 			// TO DO : Send notification to user regarding requestStatus
 		} else {
+			log.error("No User found in database for userId : " + userId);
 			throw new NotFoundException("No User found in database for userId : " + userId);
 		}
 	}
