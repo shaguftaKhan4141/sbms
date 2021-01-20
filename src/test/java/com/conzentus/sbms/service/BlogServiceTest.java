@@ -15,7 +15,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import com.conzentus.sbms.TestData;
 import com.cozentus.sbms.authentication.AuthenticationFacade;
 import com.cozentus.sbms.domain.Blog;
-import com.cozentus.sbms.dto.BlogRequestDto;
 import com.cozentus.sbms.dto.BlogResponseDto;
 import com.cozentus.sbms.error.NotFoundException;
 import com.cozentus.sbms.repository.BlogRepository;

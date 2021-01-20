@@ -64,10 +64,10 @@ public class TopicServiceImpl implements TopicService {
 	public void deleteTopicById(Long id) throws NotFoundException {
 		log.info("Start executing delete topic method");
 		log.info("Extracting topic from db having topicId : {}",id);
-		Optional<Topic> topicFromdB = topicRepository.findById(id);
-		if (topicFromdB.isPresent()) {
+		boolean topicExist = topicRepository.existsById(id);
+		if (topicExist) {
 			log.info("Topic present in db, hence deleting existing topic");
-			topicRepository.delete(topicFromdB.get());
+			topicRepository.deleteById(id);
 		} else {
 			log.error("Topic not found for id : " + id);
 			throw new NotFoundException("Topic not found for id : " + id);
