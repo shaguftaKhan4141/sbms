@@ -12,6 +12,7 @@ public class TestData {
 		blog.setAuthorId(1L);
 		blog.setBlogLink("http://test_link");
 		blog.setCoAuthorId(2L);
+		blog.setTitle("test");
 		blog.setStatus(BlogStatus.SYNOPSIS_APPROVED.toString());
 		return blog;
 	}

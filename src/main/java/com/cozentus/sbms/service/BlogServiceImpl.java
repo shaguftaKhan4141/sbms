@@ -1,7 +1,11 @@
 package com.cozentus.sbms.service;
 
+import java.io.IOException;
+import java.util.concurrent.Flow.Publisher;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.cozentus.sbms.authentication.IAuthenticationFacade;
 import com.cozentus.sbms.domain.Blog;
@@ -12,6 +16,7 @@ import com.cozentus.sbms.enumeration.Role;
 import com.cozentus.sbms.error.InvalidDataException;
 import com.cozentus.sbms.error.NotFoundException;
 import com.cozentus.sbms.error.UserNotAuthorizedException;
+import com.cozentus.sbms.event.EventData;
 import com.cozentus.sbms.mapper.BlogMapper;
 import com.cozentus.sbms.repository.BlogRepository;
 import com.cozentus.sbms.util.CommonUtils;
@@ -25,6 +30,12 @@ public class BlogServiceImpl implements BlogService {
 	@Autowired
 	private IAuthenticationFacade authenticationFacade;
 	
+	@Autowired
+	AwsService awsService;
+	
+	//@Autowired
+	//Publisher<EventData> publisher;
+	
 	@Override
 	public BlogResponseDto getBlog(Long blogId) throws NotFoundException {
 		Blog blog = blogRepository.findById(blogId)
@@ -36,6 +47,15 @@ public class BlogServiceImpl implements BlogService {
 	public BlogResponseDto createBlog(BlogRequestDto blogDto) {
 		Blog blog = BlogMapper.blogRequestDtoToBlogForCreate(blogDto, authenticationFacade.getUserName());
 		return BlogMapper.blogToBlogResponseDto(blogRepository.save(blog));
+	}
+	
+	public void saveOrUpdateDocument(MultipartFile file, Long id) throws NotFoundException, IOException {
+		Blog blog = blogRepository.findById(id)
+				.orElseThrow(() -> new NotFoundException("No Blog found for id : " + id));
+		if(blog.getStatus().equals(BlogStatus.SYNOPSIS_APPROVED.toString())) {
+			blog.setBlogLink(awsService.save(file));
+		}
+		blogRepository.save(blog);
 	}
 
 	// this does not updates the status of Blog
@@ -67,6 +87,7 @@ public class BlogServiceImpl implements BlogService {
 		}
 
 		blog.setStatus(BlogStatus.valueOf(status).toString());
+		blogRepository.save(blog);
 
 	}
 

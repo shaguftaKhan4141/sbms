@@ -52,7 +52,16 @@ public class BlogServiceTest {
     	assertEquals(mockBlog.getAuthorId(), response.getAuthorId());  	
     }
     
+    @Test
+    void updateBlogTest() throws NotFoundException {
+    	Blog mockBlog = TestData.getMockBlog();
+    	when(blogRepository.findById(Mockito.any(Long.class))).thenReturn(Optional.of(mockBlog));
+    	when(authenticationFacade.getUserName()).thenReturn("test");
+    	BlogResponseDto response = blogService.updateBlog(TestData.getMockBlogRequestDto(), 1L);
 
+    	assertEquals(mockBlog.getAuthorId(), response.getAuthorId());  	
+   	
+    }
     
     @Test
     void deleteById() throws NotFoundException {

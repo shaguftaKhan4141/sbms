@@ -1,12 +1,14 @@
 package com.cozentus.sbms.domain;
 
 import java.util.Date;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -26,6 +28,9 @@ public class Topic {
 
 	@Column(nullable = false, length = 100)
 	private String name;
+
+	@ManyToMany(mappedBy = "topics")
+	Set<User> subscriber;
 
 	@Temporal(TemporalType.DATE)
 	@Column(name = "created_date", length = 19)

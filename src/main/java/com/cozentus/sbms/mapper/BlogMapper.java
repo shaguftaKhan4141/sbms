@@ -37,9 +37,6 @@ public class BlogMapper {
 		if(blogRequestDto.getTopic()!=null)
 		   blog.setTopic(blogRequestDto.getTopic());
 		
-		if(exists(blogRequestDto.getBlogLink()))
-		   blog.setBlogLink(blogRequestDto.getBlogLink());
-		
 		blog.setUpdatedBy(user);
 		blog.setUpdatedDate(new Date());
 		
