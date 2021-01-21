@@ -4,11 +4,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.conzentus.sbms.TestData;
@@ -18,7 +20,6 @@ import com.cozentus.sbms.dto.UserResponseDto;
 import com.cozentus.sbms.error.NotFoundException;
 import com.cozentus.sbms.repository.BlogUserRepository;
 import com.cozentus.sbms.service.AdminServiceImpl;
-
 
 @ExtendWith(MockitoExtension.class)
 public class AdminServiceTest {
@@ -38,5 +39,13 @@ public class AdminServiceTest {
 		when(blogUserRepository.findByRoleId(1L)).thenReturn(users);
 		List<UserResponseDto> userResponseDtos = adminServiceImpl.getAllUsersByRoleId(1L);
 		assertEquals(userResponseDtos.get(0).getFirstName(), users.get(0).getFirstName());
+	}
+	
+	@Test
+	void approvedMockUserRequest() throws NotFoundException {
+		User user = TestData.getMockUser();
+		when(blogUserRepository.findById(1L)).thenReturn(Optional.of(user));
+		adminServiceImpl.approvedUserRequest(1L, "APPORVED");
+		Mockito.verify(blogUserRepository,  Mockito.times(1)).save(user);
 	}
 }

@@ -23,11 +23,10 @@ public class EmailService {
 	        MimeMessage msg = javaMailSender.createMimeMessage();
 
 	        MimeMessageHelper helper = new MimeMessageHelper(msg, true);	        
-	        helper.setTo("to_@email");
-	        helper.setSubject("Testing from Spring Boot");
-	        helper.setText("<h1>Dear username, Check attachment for image!</h1>", true);
+	        helper.setTo("toEmail@cozentus.com");
+            helper.setSubject("Testing from Spring Boot");
+            helper.setText("<h1>Dear username, Check attachment for image!</h1>", true);
 	        helper.addAttachment(file.getName(), new InputStreamResource(file.getInputStream()));
-
 	        javaMailSender.send(msg);
 
 	    }

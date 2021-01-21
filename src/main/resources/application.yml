@@ -15,6 +15,10 @@ spring:
     port: 587
     username: username
     password: password
+    properties:
+      mail.transport.protocol: smtp
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: true
                
 
 jwt:

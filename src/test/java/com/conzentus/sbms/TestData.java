@@ -63,4 +63,13 @@ public class TestData {
 		users.add(user);
 		return users;
 	}
+	
+	public static User getMockUser() {
+		User user = new User();
+		user.setId(1L);
+		user.setFirstName("Shashank");
+		user.setLastName("Sharma");
+		user.setContactNo("826922794");
+		return user;
+	}
 }
