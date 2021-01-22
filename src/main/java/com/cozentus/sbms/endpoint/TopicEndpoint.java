@@ -27,4 +27,9 @@ public interface TopicEndpoint {
 	
 	@GetMapping(value = "/topic")
 	public ResponseEntity<?> getAllTopics();
+	
+	@PutMapping(value = "/topic/{topicId}/subscribe/user/{userId}")
+	public ResponseEntity<?> updateTopicSubscriber(@PathVariable("userId") Long userId, @PathVariable("topicId") Long topicId)
+			throws NotFoundException;
+
 }

@@ -2,16 +2,20 @@ package com.cozentus.sbms.service;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import com.cozentus.sbms.domain.Topic;
+import com.cozentus.sbms.domain.User;
 import com.cozentus.sbms.dto.TopicDto;
 import com.cozentus.sbms.error.NotFoundException;
+import com.cozentus.sbms.repository.BlogUserRepository;
 import com.cozentus.sbms.repository.TopicRepository;
 
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +26,9 @@ public class TopicServiceImpl implements TopicService {
 
 	@Autowired
 	private TopicRepository topicRepository;
+	
+	@Autowired
+	private BlogUserRepository blogUserRepository;
 
 	@Override
 	public void addTopics(List<String> topicNames) {
@@ -87,5 +94,17 @@ public class TopicServiceImpl implements TopicService {
 			});
 		}
 		return topicDtos;
+	}
+	
+	@Override
+	public void updatesubscribers(Long userId, Long topicId) throws NotFoundException {
+		User subscriber = blogUserRepository.findById(userId)
+				.orElseThrow(() -> new NotFoundException("No User found for id : " + userId));
+		Topic topic = topicRepository.findById(topicId)
+				.orElseThrow(() -> new NotFoundException("No topic found for id : " + topicId));
+		Set<Topic> topics = new HashSet<>();
+		topics.add(topic);
+		subscriber.setTopics(topics);
+		blogUserRepository.save(subscriber);		
 	}
 }

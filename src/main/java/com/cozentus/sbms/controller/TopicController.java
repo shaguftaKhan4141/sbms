@@ -53,4 +53,11 @@ public class TopicController implements TopicEndpoint {
 		return new GenericResponseHandler.Builder().setStatus(HttpStatus.OK).setMessage("Topic fetched successfully")
 				.setData(response).create();
 	}
+
+	@Override
+	public ResponseEntity<?> updateTopicSubscriber(Long userId, Long topicId) throws NotFoundException {
+		 topicService.updatesubscribers(userId, topicId);
+			return new GenericResponseHandler.Builder().setStatus(HttpStatus.OK).setMessage("User successfully subscribed!")
+					.create();
+	}
 }

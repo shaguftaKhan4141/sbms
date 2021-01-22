@@ -1,7 +1,5 @@
 package com.cozentus.sbms.dto;
 
-import com.cozentus.sbms.domain.Topic;
-
 import lombok.Data;
 
 @Data

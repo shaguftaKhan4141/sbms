@@ -26,7 +26,7 @@ public class EmailService {
 	        MimeMessageHelper helper = new MimeMessageHelper(msg, true);	        
 	        helper.setTo(email);
             helper.setSubject("Testing from Spring Boot");
-            helper.setText("Dear " + username + "," + authorName + " has published a new post!", true);
+            helper.setText("Dear " + username + ", " + authorName + " has published a new post!", true);
             
             var attachment = new ByteArrayDataSource(file.getInputStream(), "application/octet-stream");
 

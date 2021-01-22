@@ -15,4 +15,6 @@ public interface TopicService {
 
 	void addTopics(List<String> topicNames);
 
+	void updatesubscribers(Long userId, Long topicId) throws NotFoundException;
+
 }

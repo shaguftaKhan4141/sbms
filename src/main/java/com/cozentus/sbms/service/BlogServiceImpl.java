@@ -81,7 +81,7 @@ public class BlogServiceImpl implements BlogService {
 		User author = blogUserRepository.findById(blog.getAuthorId())
 				.orElseThrow(() -> new NotFoundException("No Author found for id : " + blog.getAuthorId()));
 		
-		subscribers.forEach(subscriber -> publisher.publishEvent(new EventData(subscriber.getUserName(), author.getUserName(), subscriber.getEmailId(), file)));
+		subscribers.forEach(subscriber -> publisher.publishEvent(new EventData(subscriber.getUserName(), subscriber.getEmailId(), author.getUserName(), file)));
 	}
 
 	// this does not updates the status of Blog
