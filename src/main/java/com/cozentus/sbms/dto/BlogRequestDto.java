@@ -19,6 +19,6 @@ public class BlogRequestDto {
 
 	private String status;
 
-	private Topic topic;
+	private Long topicId;
 
 }

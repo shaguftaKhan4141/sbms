@@ -10,5 +10,7 @@ import lombok.Data;
 public class EventData {
     
 	private String username;
+	private String email;
+	private String authorName;
 	private MultipartFile file;
 }

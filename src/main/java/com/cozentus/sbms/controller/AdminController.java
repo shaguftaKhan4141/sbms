@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cozentus.sbms.dto.UserResponseDto;
@@ -12,17 +13,23 @@ import com.cozentus.sbms.endpoint.AdminEndpoint;
 import com.cozentus.sbms.enumeration.UserRequestStatus;
 import com.cozentus.sbms.error.InvalidDataException;
 import com.cozentus.sbms.error.NotFoundException;
+import com.cozentus.sbms.error.UserNotAuthorizedException;
 import com.cozentus.sbms.handler.GenericResponseHandler;
 import com.cozentus.sbms.service.AdminService;
+import com.cozentus.sbms.service.BlogService;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
+@RequestMapping("/admin")
 public class AdminController implements AdminEndpoint {
 
 	@Autowired
 	private AdminService adminService;
+	
+	@Autowired
+	private BlogService blogService;
 
 	@Override
 	public ResponseEntity<?> getAllUsersByRoleId(Long roleId) throws NotFoundException {
@@ -52,5 +59,13 @@ public class AdminController implements AdminEndpoint {
 		}
 		return new GenericResponseHandler.Builder().setStatus(HttpStatus.OK)
 				.setMessage("User Request status changed").create();
+	}
+	
+	
+	@Override
+	public ResponseEntity<?> approveSynopsis(Long blogId, String status) throws NotFoundException, UserNotAuthorizedException, InvalidDataException {
+		blogService.updateBlogStatus(blogId, status);
+		return new GenericResponseHandler.Builder().setStatus(HttpStatus.OK)
+				.setMessage("Synopsis approved!").create();
 	}
 }

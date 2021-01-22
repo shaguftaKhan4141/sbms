@@ -21,7 +21,7 @@ public class EmailNotificationListener {
 	 @EventListener
 	 void  sendMailEvent(EventData event) {
 		 try {
-			emailService.sendEmailWithAttachment(event.getUsername(), event.getFile());
+			emailService.sendEmailWithAttachment(event.getUsername(),event.getAuthorName(), event.getEmail(), event.getFile());
 		} catch (MessagingException | IOException e) {
 			e.printStackTrace();
 		}

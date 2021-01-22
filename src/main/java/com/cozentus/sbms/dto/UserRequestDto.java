@@ -12,29 +12,29 @@ import lombok.Data;
 public class UserRequestDto {
 
 	@JsonProperty("first_name")
-	@NotEmpty(message = "firstName must not be empty")
+	//@NotEmpty(message = "firstName must not be empty")
 	private String firstName;
 
 	@JsonProperty("last_name")
-	@NotEmpty(message = "lastName must not be empty")
+	//@NotEmpty(message = "lastName must not be empty")
 	private String lastName;
 
 	@JsonProperty("contact_no")
-	@NotEmpty(message = "contactNo must not be empty")
+	//@NotEmpty(message = "contactNo must not be empty")
 	private String contactNo;
 
 	@JsonProperty("email_id")
-	@NotEmpty(message = "emailId must not be empty")
+	//@NotEmpty(message = "emailId must not be empty")
 	private String emailId;
 
 	@JsonProperty("user_name")
-	@NotEmpty(message = "userName must not be empty")
+	//@NotEmpty(message = "userName must not be empty")
 	private String userName;
 
 	@NotEmpty(message = "password must not be empty")
 	private String password;
 
 	@JsonProperty("role_id")
-	@NotNull(message = "role_id must not be null")
+	//@NotNull(message = "role_id must not be null")
 	private Long roleId;
 }

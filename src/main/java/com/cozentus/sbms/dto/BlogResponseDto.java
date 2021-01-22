@@ -29,7 +29,7 @@ public class BlogResponseDto {
 
 	private String status;
 
-	private Topic topic;
+	private TopicDto topic;
 
 	private Date createdDate;
 

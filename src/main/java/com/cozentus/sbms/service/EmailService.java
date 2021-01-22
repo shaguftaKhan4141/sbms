@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import javax.mail.util.ByteArrayDataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
@@ -18,15 +19,18 @@ public class EmailService {
     @Autowired
     private JavaMailSender javaMailSender;
     
-	 public void sendEmailWithAttachment(String username, MultipartFile file) throws MessagingException, IOException {
+	 public void sendEmailWithAttachment(String username, String authorName, String email, MultipartFile file) throws MessagingException, IOException {
 
 	        MimeMessage msg = javaMailSender.createMimeMessage();
 
 	        MimeMessageHelper helper = new MimeMessageHelper(msg, true);	        
-	        helper.setTo("toEmail@cozentus.com");
+	        helper.setTo(email);
             helper.setSubject("Testing from Spring Boot");
-            helper.setText("<h1>Dear username, Check attachment for image!</h1>", true);
-	        helper.addAttachment(file.getName(), new InputStreamResource(file.getInputStream()));
+            helper.setText("Dear " + username + "," + authorName + " has published a new post!", true);
+            
+            var attachment = new ByteArrayDataSource(file.getInputStream(), "application/octet-stream");
+
+	        helper.addAttachment(file.getOriginalFilename(), attachment);
 	        javaMailSender.send(msg);
 
 	    }

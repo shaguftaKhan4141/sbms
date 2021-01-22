@@ -5,6 +5,7 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -17,10 +18,12 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
 @Entity
 @Table(name = "blog_user")
+@EqualsAndHashCode(exclude="topics")
 public class User {
 
 	@Id
@@ -48,7 +51,7 @@ public class User {
 	@Column(nullable = false)
 	private String password;
 	
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(
 			  name = "topic_subscriber", 
 			  joinColumns = @JoinColumn(name = "user_id"), 

@@ -11,8 +11,8 @@ class Publisher {
 	@Autowired
     private ApplicationEventPublisher  publisher;
     
-  void publishEvent(final String name, final MultipartFile file) {
+  void publishEvent(final String name, final String authorName, final String email, final MultipartFile file) {
     // Publishing event created by extending ApplicationEvent
-    publisher.publishEvent(new EventData(name, file));
+    publisher.publishEvent(new EventData(name, authorName, email, file));
   }
 }

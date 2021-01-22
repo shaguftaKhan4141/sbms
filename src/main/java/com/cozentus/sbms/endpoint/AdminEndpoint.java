@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.cozentus.sbms.error.InvalidDataException;
 import com.cozentus.sbms.error.NotFoundException;
+import com.cozentus.sbms.error.UserNotAuthorizedException;
 
 public interface AdminEndpoint {
 
@@ -18,8 +19,11 @@ public interface AdminEndpoint {
 	public ResponseEntity<?> getAllUsers(@RequestParam(name = "status", required = false) String requestStatus)
 			throws NotFoundException, InvalidDataException;
 	
-	@PutMapping(value = "/user/request/{userId}")
+	@PutMapping(value = "/approve/user/{userId}")
 	public ResponseEntity<?> approvedUserRequest(@PathVariable("userId") Long userId,
 			@RequestParam("status") String requestStatus) throws NotFoundException, InvalidDataException;
-	
+
+	@PutMapping(value = "/approve/synopsis/{blogId}/{status}")
+	ResponseEntity<?> approveSynopsis(@PathVariable("blogId") Long blogId, @PathVariable("status") String status)
+			throws NotFoundException, UserNotAuthorizedException, InvalidDataException;	
 }

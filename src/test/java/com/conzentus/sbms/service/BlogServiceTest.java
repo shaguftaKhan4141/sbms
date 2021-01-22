@@ -42,7 +42,7 @@ public class BlogServiceTest {
     }
     
     @Test
-	void createblogTest() {
+	void createblogTest() throws NotFoundException {
     	Blog mockBlog = TestData.getMockBlog();
     	when(blogRepository.save(Mockito.any(Blog.class))).thenReturn(mockBlog);
     	when(authenticationFacade.getUserName()).thenReturn("test");

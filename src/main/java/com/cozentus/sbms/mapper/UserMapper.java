@@ -28,6 +28,7 @@ public class UserMapper {
 	
 	public static UserResponseDto userToUserDto(User user) {
 		return UserResponseDto.builder()
+				.id(user.getId())
 				.contactNo(user.getContactNo())
 				.emailId(user.getEmailId())
 				.firstName(user.getFirstName())
